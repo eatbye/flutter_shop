@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_shop/config/httpHeaders.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,13 +16,28 @@ class _HomePageState extends State<HomePage> {
   Future getHttp(String text) async {
     try {
       var data = {'name': text};
-      Response response = await Dio().get(
+      Response response = await Dio().post(   //get更换为post可以用post方式提交数据
           "https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian",
           queryParameters: data);
       return response.data;
     } catch (e) {
       return print(e);
     }
+  }
+
+  void getHttp1() async {
+    try{
+      Dio dio = Dio();
+      dio.options.headers = httpHeaders;
+      Response response = await dio.get("https://time.geekbang.org/serv/v1/column/newAll");
+      return print(response);
+    }catch(e){
+      return print(e);
+    }
+  }
+
+  void _http1Action(){
+    getHttp1();
   }
 
   void _choiceAction() {
@@ -67,6 +84,11 @@ class _HomePageState extends State<HomePage> {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
+              RaisedButton(
+                onPressed: getHttp1,
+                child: Text('测试'),
+              ),
+
             ],
           ),
         ),
